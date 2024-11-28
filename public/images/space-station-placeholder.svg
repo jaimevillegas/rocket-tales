@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="spaceGradient">
+            <stop stop-color="#1a1a2e" offset="0%"></stop>
+            <stop stop-color="#16213e" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="70%" id="starsGradient">
+            <stop stop-color="#ffffff" stop-opacity="0.8" offset="0%"></stop>
+            <stop stop-color="#ffffff" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g stroke="none" fill="none">
+        <rect fill="url(#spaceGradient)" x="0" y="0" width="800" height="600"></rect>
+        <circle fill="url(#starsGradient)" opacity="0.1" cx="400" cy="300" r="200"></circle>
+        <g transform="translate(250, 150)" fill="#ffffff" fill-opacity="0.8">
+            <rect x="0" y="0" width="300" height="100" rx="50"></rect>
+            <circle cx="150" cy="200" r="80"></circle>
+            <rect x="100" y="100" width="100" height="200"></rect>
+            <g transform="translate(50, 50)" fill="#0070f3" fill-opacity="0.6">
+                <circle cx="25" cy="25" r="15"></circle>
+                <circle cx="175" cy="25" r="15"></circle>
+            </g>
+        </g>
+        <text x="400" y="500" font-family="Arial" font-size="24" fill="#ffffff" text-anchor="middle">Space Station</text>
+    </g>
+</svg>
