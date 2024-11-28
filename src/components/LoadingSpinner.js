@@ -1,19 +1,30 @@
 import React from 'react'
 
-const LoadingSpinner = ({ message = 'Loading...' }) => {
+export default function LoadingSpinner({ size = 'default' }) {
+  const sizeClasses = {
+    small: 'w-8 h-8',
+    default: 'w-16 h-16',
+    large: 'w-24 h-24',
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] p-4">
-      <div className="relative w-20 h-20 mb-4">
-        {/* Outer ring */}
-        <div className="absolute inset-0 border-4 border-blue-200 rounded-full animate-pulse"></div>
-        {/* Inner spinning ring */}
-        <div className="absolute inset-0 border-4 border-transparent border-t-blue-500 rounded-full animate-spin"></div>
-        {/* Center dot */}
-        <div className="absolute inset-[30%] bg-blue-500 rounded-full animate-pulse"></div>
+    <div className="flex items-center justify-center p-4">
+      <div className={`loading-ring ${sizeClasses[size]}`}>
+        <div className="text-blue-500 dark:text-blue-400"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <svg
+            className="animate-pulse text-blue-500 dark:text-blue-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          </svg>
+        </div>
       </div>
-      <p className="text-lg text-gray-600 animate-pulse">{message}</p>
     </div>
   )
 }
-
-export default LoadingSpinner

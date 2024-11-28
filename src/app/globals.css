@@ -1,0 +1,274 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+body {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+/* Space background animations */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: transparent url('/images/stars.png') repeat;
+  background-size: 200px;
+  animation: stars 150s linear infinite;
+  opacity: 0.3;
+}
+
+.stars2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: transparent url('/images/stars.png') repeat;
+  background-size: 300px;
+  animation: stars 100s linear infinite;
+  opacity: 0.2;
+}
+
+.stars3 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: transparent url('/images/stars.png') repeat;
+  background-size: 400px;
+  animation: stars 200s linear infinite;
+  opacity: 0.1;
+}
+
+@keyframes stars {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-1024px);
+  }
+}
+
+/* Glass effect */
+.glass {
+  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-white border-opacity-20;
+}
+
+.dark .glass {
+  @apply bg-gray-900 bg-opacity-50 border-gray-700;
+}
+
+/* Card hover effects */
+.hover-card {
+  @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-lg;
+}
+
+/* Glowing effects */
+.glow {
+  @apply relative overflow-hidden;
+}
+
+.glow::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 transition-opacity duration-300;
+}
+
+.glow:hover::before {
+  @apply opacity-20;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .glass {
+    @apply backdrop-blur-md;
+  }
+  
+  .stars, .stars2, .stars3 {
+    animation-duration: 250s;
+  }
+}
+
+@layer base {
+  :root {
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+  }
+
+  .dark {
+    --glass-bg: rgba(0, 0, 0, 0.3);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+}
+
+@layer components {
+  .glass {
+    @apply backdrop-blur-md bg-white/10 dark:bg-black/30 border border-white/20 dark:border-white/10;
+  }
+
+  .glass-card {
+    @apply glass rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02];
+  }
+
+  .glass-button {
+    @apply glass px-4 py-2 rounded-md hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300;
+  }
+}
+
+/* Space Background Effects */
+.stars, .stars2, .stars3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: url(/images/stars.png) repeat top center;
+  z-index: 0;
+}
+
+.stars {
+  animation: stars-move 200s linear infinite;
+  opacity: 0.5;
+}
+
+.stars2 {
+  animation: stars-move 150s linear infinite;
+  opacity: 0.3;
+}
+
+.stars3 {
+  animation: stars-move 100s linear infinite;
+  opacity: 0.2;
+}
+
+.nebula-1 {
+  background: radial-gradient(circle at 30% 50%, rgba(123, 31, 162, 0.2), transparent 70%),
+              radial-gradient(circle at 70% 50%, rgba(66, 165, 245, 0.2), transparent 70%);
+  filter: blur(30px);
+}
+
+.nebula-2 {
+  background: radial-gradient(circle at 60% 30%, rgba(156, 39, 176, 0.2), transparent 70%),
+              radial-gradient(circle at 40% 70%, rgba(3, 169, 244, 0.2), transparent 70%);
+  filter: blur(30px);
+}
+
+.shooting-stars span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1),
+              0 0 0 8px rgba(255, 255, 255, 0.1),
+              0 0 20px rgba(255, 255, 255, 1);
+  animation: shoot 3s linear infinite;
+}
+
+.shooting-stars span:nth-child(1) {
+  top: 0;
+  right: 0;
+  left: initial;
+  animation-delay: 0s;
+  animation-duration: 3s;
+}
+
+.shooting-stars span:nth-child(2) {
+  top: 0;
+  right: 80px;
+  left: initial;
+  animation-delay: 0.8s;
+  animation-duration: 4s;
+}
+
+.shooting-stars span:nth-child(3) {
+  top: 80px;
+  right: 0px;
+  left: initial;
+  animation-delay: 1.6s;
+  animation-duration: 5s;
+}
+
+@keyframes stars-move {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 10000px 5000px;
+  }
+}
+
+@keyframes shoot {
+  0% {
+    transform: rotate(315deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(315deg) translateX(-1500px);
+    opacity: 0;
+  }
+}
+
+/* Loading animation */
+.loading-ring {
+  @apply inline-block relative w-16 h-16;
+}
+
+.loading-ring div {
+  @apply box-border block absolute w-12 h-12 m-2 border-4 border-transparent border-t-current rounded-full animate-spin;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-blue-500/50 rounded-full hover:bg-blue-500/70 transition-colors;
+}
+
+/* Utility classes */
+.text-glow {
+  text-shadow: 0 0 10px currentColor;
+}
+
+.hover-glow {
+  @apply transition-all duration-300;
+}
+
+.hover-glow:hover {
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Focus styles */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 focus:ring-offset-transparent;
+}
