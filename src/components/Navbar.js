@@ -24,6 +24,9 @@ const Navbar = () => {
           <Link href="/space-stations" className="hover:text-gray-300">
             Space Stations
           </Link>
+          <Link href="/mars-rovers" className="hover:text-gray-300">
+            Curiosity Rover
+          </Link>
           <Link href="/apod" className="hover:text-gray-300">
             APOD
           </Link>

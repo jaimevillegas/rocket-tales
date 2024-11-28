@@ -10,6 +10,23 @@ export default function SpaceStationContent({ id }) {
   const { data: station, isLoading, isError, error } = useSpaceStation(id)
   const [activeTab, setActiveTab] = useState('overview')
 
+  console.log('Space Station Data:', {
+    station,
+    isLoading,
+    isError,
+    error
+  })
+
+  console.log('Individual Station Data:', {
+    fullStation: station,
+    imageFields: station ? {
+      image_url: station.image_url,
+      imageUrl: station.imageUrl,
+      image: station.image,
+      allKeys: Object.keys(station)
+    } : null
+  })
+
   if (isLoading) {
     return <LoadingSpinner message="Loading space station details..." />
   }
@@ -104,37 +121,6 @@ export default function SpaceStationContent({ id }) {
             </div>
           </div>
         )
-      case 'location':
-        return (
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Location & Docking</h3>
-            <div className="space-y-6">
-              {station.docking_location && (
-                <div>
-                  <h4 className="text-lg font-medium mb-2">Docking Information</h4>
-                  <p className="text-gray-600 bg-gray-50 p-4 rounded-lg">
-                    {station.docking_location}
-                  </p>
-                </div>
-              )}
-              <div>
-                <h4 className="text-lg font-medium mb-2">Orbital Parameters</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-sm font-medium text-gray-500">Orbit Type</p>
-                    <p className="mt-1 font-semibold">{station.orbit || 'Not specified'}</p>
-                  </div>
-                  {station.orbit_height && (
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <p className="text-sm font-medium text-gray-500">Orbit Height</p>
-                      <p className="mt-1 font-semibold">{station.orbit_height}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )
       default:
         return null
     }
@@ -144,7 +130,7 @@ export default function SpaceStationContent({ id }) {
     <div className="min-h-screen bg-gray-50">
       <div className="relative h-[50vh] bg-black">
         <Image
-          src={station.image_url || '/images/space-station-placeholder.svg'}
+          src={station.image?.image_url || '/images/space-station-placeholder.svg'}
           alt={station.name}
           fill
           className="object-cover opacity-60"
@@ -208,16 +194,6 @@ export default function SpaceStationContent({ id }) {
                   }`}
               >
                 Owners
-              </button>
-              <button
-                onClick={() => setActiveTab('location')}
-                className={`py-4 px-1 inline-flex items-center border-b-2 font-medium text-sm
-                  ${activeTab === 'location'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-              >
-                Location
               </button>
             </nav>
           </div>

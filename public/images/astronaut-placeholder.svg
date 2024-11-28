@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="800px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Astronaut Placeholder</title>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle fill="#E5E7EB" cx="12" cy="12" r="12"/>
+        <path d="M12,6 C13.1045695,6 14,6.8954305 14,8 C14,9.1045695 13.1045695,10 12,10 C10.8954305,10 10,9.1045695 10,8 C10,6.8954305 10.8954305,6 12,6 Z M12,11 C14.7614237,11 17,13.2385763 17,16 L17,17 C17,17.5522847 16.5522847,18 16,18 L8,18 C7.44771525,18 7,17.5522847 7,17 L7,16 C7,13.2385763 9.23857625,11 12,11 Z" fill="#9CA3AF"/>
+    </g>
+</svg>

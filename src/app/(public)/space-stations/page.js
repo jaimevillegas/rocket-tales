@@ -17,6 +17,17 @@ function SpaceStationsPage() {
     (page - 1) * ITEMS_PER_PAGE
   )
 
+  console.log('Space Stations List Data:', {
+    fullData: data,
+    firstStation: data?.results?.[0],
+    imageFields: data?.results?.[0] ? {
+      image_url: data.results[0].image_url,
+      imageUrl: data.results[0].imageUrl,
+      image: data.results[0].image,
+      allKeys: Object.keys(data.results[0])
+    } : null
+  })
+
   if (isLoading) {
     return <LoadingSpinner message="Loading space stations..." />
   }
@@ -84,7 +95,7 @@ function SpaceStationsPage() {
             >
               <div className="relative h-48">
                 <Image
-                  src={station.image_url || '/images/space-station-placeholder.jpg'}
+                  src={station.image?.image_url || '/images/space-station-placeholder.svg'}
                   alt={station.name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
