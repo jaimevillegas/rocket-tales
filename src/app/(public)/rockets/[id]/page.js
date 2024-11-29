@@ -18,74 +18,24 @@ export default function RocketDetailsPage({ params }) {
   } = useRocket(id)
 
   if (isLoading) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <LoadingSpinner />
-      </div>
-    )
+    return <LoadingSpinner message="Loading rocket details..." />
   }
 
   if (isError) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <Link 
-            href="/rockets"
-            className="inline-flex items-center text-blue-300 hover:text-blue-200 mb-8 group"
-          >
-            <svg
-              className="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      <div className="min-h-screen">
+        <div className="container mx-auto px-4">
+          <div className="glass-card text-center p-8">
+            <h1 className="text-4xl font-bold text-white mb-4 text-glow">Error Loading Rocket</h1>
+            <p className="text-gray-300 mb-8">
+              {error?.message || 'Unable to load rocket details. Please try again later.'}
+            </p>
+            <Link 
+              href="/rockets"
+              className="glass-button hover:bg-blue-500/20 hover:text-blue-300"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            Back to Rockets
-          </Link>
-          
-          <div className="glass-card border-red-500/30 p-6">
-            <div className="flex items-center mb-4">
-              <svg
-                className="w-6 h-6 text-red-400 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <h2 className="text-lg font-semibold text-red-300">Error Loading Rocket Details</h2>
-            </div>
-            <p className="text-red-200 mb-4">{error?.message}</p>
-            <button
-              onClick={() => router.refresh()}
-              className="glass-button text-red-300 border-red-400/30 hover:bg-red-500/20"
-            >
-              <svg
-                className="w-4 h-4 mr-2 inline"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
-              Try Again
-            </button>
+              Back to Rockets
+            </Link>
           </div>
         </div>
       </div>
@@ -93,8 +43,8 @@ export default function RocketDetailsPage({ params }) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen">
+      <div className="container mx-auto px-4 py-8">
         <Link 
           href="/rockets"
           className="inline-flex items-center text-blue-300 hover:text-blue-200 mb-8 group"
@@ -114,8 +64,8 @@ export default function RocketDetailsPage({ params }) {
           </svg>
           Back to Rockets
         </Link>
-        
-        <div className="glass-card overflow-hidden">
+
+        <div className="glass-card p-8">
           <div className="relative h-96">
             <Image
               src={rocket.image_url || '/images/rocket-placeholder.jpg'}

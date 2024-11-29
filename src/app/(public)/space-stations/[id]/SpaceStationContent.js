@@ -5,27 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSpaceStation } from '@/hooks/useSpaceStations'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 
 export default function SpaceStationContent({ id }) {
   const { data: station, isLoading, isError, error } = useSpaceStation(id)
   const [activeTab, setActiveTab] = useState('overview')
-
-  console.log('Space Station Data:', {
-    station,
-    isLoading,
-    isError,
-    error
-  })
-
-  console.log('Individual Station Data:', {
-    fullStation: station,
-    imageFields: station ? {
-      image_url: station.image_url,
-      imageUrl: station.imageUrl,
-      image: station.image,
-      allKeys: Object.keys(station)
-    } : null
-  })
 
   if (isLoading) {
     return <LoadingSpinner message="Loading space station details..." />
@@ -34,13 +18,59 @@ export default function SpaceStationContent({ id }) {
   if (isError) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="bg-red-50 border-l-4 border-red-500 p-4">
-          <p className="text-red-700">
+        <div className="glass-card border-red-500/30 p-6">
+          <div className="flex items-center mb-4">
+            <svg
+              className="w-6 h-6 text-red-400 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <h2 className="text-lg font-semibold text-red-300">Error Loading Space Station</h2>
+          </div>
+          <p className="text-red-200">
             {error?.message || 'Unable to load space station details. Please try again later.'}
           </p>
+          <Link
+            href="/space-stations"
+            className="inline-flex items-center px-4 py-2 mt-4 glass-button-error"
+          >
+            <ArrowLeftIcon className="w-4 h-4 mr-2" />
+            Back to Space Stations
+          </Link>
         </div>
       </div>
     )
+  }
+
+  const tabs = [
+    { id: 'overview', label: 'Overview' },
+    { id: 'details', label: 'Technical Details' },
+    { id: 'history', label: 'History' },
+  ]
+
+  const getStatusColor = (status) => {
+    if (!status || typeof status !== 'string') {
+      return 'bg-blue-400/20 text-blue-300 border-blue-400/30'
+    }
+
+    switch (status.toLowerCase()) {
+      case 'active':
+        return 'bg-emerald-400/20 text-emerald-300 border-emerald-400/30'
+      case 'retired':
+        return 'bg-gray-400/20 text-gray-300 border-gray-400/30'
+      case 'under construction':
+        return 'bg-yellow-400/20 text-yellow-300 border-yellow-400/30'
+      default:
+        return 'bg-blue-400/20 text-blue-300 border-blue-400/30'
+    }
   }
 
   const renderTabContent = () => {
@@ -49,75 +79,72 @@ export default function SpaceStationContent({ id }) {
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-semibold mb-3">Description</h3>
-              <p className="text-gray-600 leading-relaxed">{station.description}</p>
+              <h3 className="text-2xl font-semibold mb-3 text-glow">Description</h3>
+              <p className="text-gray-300 leading-relaxed">{station.description}</p>
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold mb-3">Key Information</h3>
+              <h3 className="text-2xl font-semibold mb-3 text-glow">Key Information</h3>
               <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <dt className="text-sm font-medium text-gray-500">Founded</dt>
-                  <dd className="mt-1 text-lg font-semibold">
+                <div className="glass-card p-4">
+                  <dt className="text-sm font-medium text-gray-400">Founded</dt>
+                  <dd className="mt-1 text-lg font-semibold text-white">
                     {new Date(station.founded).toLocaleDateString()}
                   </dd>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <dt className="text-sm font-medium text-gray-500">Status</dt>
+                <div className="glass-card p-4">
+                  <dt className="text-sm font-medium text-gray-400">Status</dt>
                   <dd className="mt-1">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                      ${station.status.name === 'Active' ? 'bg-green-100 text-green-800' : 
-                        station.status.name === 'Under Construction' ? 'bg-yellow-100 text-yellow-800' : 
-                        'bg-gray-100 text-gray-800'}`}>
-                      {station.status.name}
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(station.status?.name)}`}>
+                      {station.status?.name || 'Unknown'}
                     </span>
                   </dd>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <dt className="text-sm font-medium text-gray-500">Type</dt>
-                  <dd className="mt-1 text-lg font-semibold">{station.type.name}</dd>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <dt className="text-sm font-medium text-gray-500">Orbit</dt>
-                  <dd className="mt-1 text-lg font-semibold">{station.orbit || 'Not specified'}</dd>
-                </div>
-                {station.orbit_height && (
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <dt className="text-sm font-medium text-gray-500">Orbit Height</dt>
-                    <dd className="mt-1 text-lg font-semibold">{station.orbit_height}</dd>
-                  </div>
-                )}
               </dl>
             </div>
           </div>
         )
-      case 'owners':
+      case 'details':
         return (
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Operating Organizations</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {station.owners?.map((owner) => (
-                <div key={owner.id} className="bg-white rounded-lg shadow-md p-4">
-                  <div className="flex items-center space-x-4">
-                    {owner.logo_url && (
-                      <div className="relative w-16 h-16 flex-shrink-0">
-                        <Image
-                          src={owner.logo_url}
-                          alt={owner.name}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                    )}
-                    <div>
-                      <h4 className="text-lg font-semibold">{owner.name}</h4>
-                      {owner.abbrev && (
-                        <p className="text-gray-500 text-sm">{owner.abbrev}</p>
-                      )}
-                    </div>
-                  </div>
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-2xl font-semibold mb-3 text-glow">Technical Specifications</h3>
+              <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="glass-card p-4">
+                  <dt className="text-sm font-medium text-gray-400">Type</dt>
+                  <dd className="mt-1 text-lg text-white">{station.type}</dd>
                 </div>
-              ))}
+                <div className="glass-card p-4">
+                  <dt className="text-sm font-medium text-gray-400">Orbit</dt>
+                  <dd className="mt-1 text-lg text-white">{station.orbit}</dd>
+                </div>
+                <div className="glass-card p-4">
+                  <dt className="text-sm font-medium text-gray-400">Owners</dt>
+                  <dd className="mt-1 text-lg text-white">{station.owners}</dd>
+                </div>
+                <div className="glass-card p-4">
+                  <dt className="text-sm font-medium text-gray-400">Contractors</dt>
+                  <dd className="mt-1 text-lg text-white">{station.contractors}</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        )
+      case 'history':
+        return (
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-2xl font-semibold mb-3 text-glow">Historical Timeline</h3>
+              <div className="glass-card p-6">
+                <div className="space-y-4">
+                  {station.history?.map((event, index) => (
+                    <div key={index} className="border-l-2 border-blue-500/30 pl-4 pb-4">
+                      <div className="text-sm text-gray-400">{new Date(event.date).toLocaleDateString()}</div>
+                      <div className="mt-1 text-white">{event.description}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )
@@ -127,82 +154,52 @@ export default function SpaceStationContent({ id }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="relative h-[50vh] bg-black">
-        <Image
-          src={station.image?.image_url || '/images/space-station-placeholder.svg'}
-          alt={station.name}
-          fill
-          className="object-cover opacity-60"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-        
-        <div className="absolute bottom-0 left-0 right-0 p-8">
-          <div className="container mx-auto">
-            <Link
-              href="/space-stations"
-              className="inline-flex items-center text-white/80 hover:text-white mb-4 transition-colors"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-              </svg>
-              Back to Space Stations
-            </Link>
+    <div className="container mx-auto px-4 py-8">
+      <Link
+        href="/space-stations"
+        className="inline-flex items-center mb-6 text-blue-400 hover:text-blue-300 transition-colors"
+      >
+        <ArrowLeftIcon className="w-4 h-4 mr-2" />
+        Back to Space Stations
+      </Link>
 
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  {station.name}
-                </h1>
-                <p className="text-white/80 text-lg">
-                  {station.type.name}
-                </p>
-              </div>
-              <span className={`px-4 py-2 rounded-full text-sm font-medium
-                ${station.status.name === 'Active' ? 'bg-green-500' : 
-                  station.status.name === 'Under Construction' ? 'bg-yellow-500' : 
-                  'bg-gray-500'} text-white`}>
-                {station.status.name}
-              </span>
-            </div>
+      <div className="glass-card overflow-hidden mb-8">
+        <div className="relative h-64 md:h-96">
+          {station.image_url && (
+            <Image
+              src={station.image_url}
+              alt={station.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+          <div className="absolute bottom-0 left-0 p-6">
+            <h1 className="text-4xl font-bold text-white mb-2 text-glow">{station.name}</h1>
+            <p className="text-gray-300">{station.type}</p>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          {/* Tabs */}
-          <div className="border-b">
-            <nav className="flex space-x-8 px-6" aria-label="Tabs">
-              <button
-                onClick={() => setActiveTab('overview')}
-                className={`py-4 px-1 inline-flex items-center border-b-2 font-medium text-sm
-                  ${activeTab === 'overview'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-              >
-                Overview
-              </button>
-              <button
-                onClick={() => setActiveTab('owners')}
-                className={`py-4 px-1 inline-flex items-center border-b-2 font-medium text-sm
-                  ${activeTab === 'owners'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-              >
-                Owners
-              </button>
-            </nav>
-          </div>
-
-          {/* Tab Content */}
-          <div className="p-6">
-            {renderTabContent()}
-          </div>
+      <div className="glass-card p-6">
+        <div className="flex space-x-4 mb-6 border-b border-gray-700">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`pb-4 px-2 text-sm font-medium transition-colors relative ${
+                activeTab === tab.id
+                  ? 'text-blue-400 border-b-2 border-blue-400'
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
+
+        <div className="py-4">{renderTabContent()}</div>
       </div>
     </div>
   )

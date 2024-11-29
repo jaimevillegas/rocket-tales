@@ -8,6 +8,7 @@ const navItems = [
   { href: '/', label: 'Home' },
   { href: '/missions', label: 'Missions' },
   { href: '/rockets', label: 'Rockets' },
+  { href: '/astronauts', label: 'Astronauts' },
   { href: '/space-stations', label: 'Space Stations' },
   { href: '/mars-rovers', label: 'Curiosity Rover' },
 ]

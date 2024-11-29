@@ -193,6 +193,10 @@ function SpaceStationContent({ id }) {
 
 import SpaceStationServer from './SpaceStationServer'
 
-export default function SpaceStationPage({ params }) {
-  return <SpaceStationServer id={params.id} />
+export default async function SpaceStationPage({ params }) {
+  return (
+      <Suspense fallback={<LoadingSpinner message="Loading space station..." />}>
+      <SpaceStationContent id={id} />
+    </Suspense>
+  )
 }

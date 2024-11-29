@@ -23,11 +23,20 @@ export default function AstronautsPage() {
 
   if (isError) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="bg-red-50 border-l-4 border-red-500 p-4">
-          <p className="text-red-700">
-            {error?.message || 'Unable to load astronauts. Please try again later.'}
-          </p>
+      <div className="min-h-screen">
+        <div className="container mx-auto px-4">
+          <div className="glass-card text-center p-8">
+            <h1 className="text-4xl font-bold text-white mb-4 text-glow">Error Loading Astronauts</h1>
+            <p className="text-gray-300 mb-8">
+              {error?.message || 'Unable to load astronauts. Please try again later.'}
+            </p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="glass-button hover:bg-blue-500/20 hover:text-blue-300"
+            >
+              Try Again
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -44,104 +53,96 @@ export default function AstronautsPage() {
   const totalPages = Math.ceil(data.count / ITEMS_PER_PAGE)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white text-glow">
             Astronauts
           </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Discover the brave explorers who venture into space, from pioneering legends to modern-day space travelers.
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            Explore the incredible journeys of astronauts who have ventured into space, from pioneers to modern-day explorers.
           </p>
         </div>
 
-        {/* Filters */}
-        <div className="mb-8 flex flex-wrap gap-4 justify-center">
-          <label className="flex items-center space-x-2 text-gray-700">
-            <span className="font-medium">Filter by Status:</span>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-            >
-              {statuses.map(status => (
-                <option key={status} value={status}>
-                  {status.charAt(0).toUpperCase() + status.slice(1)}
-                </option>
-              ))}
-            </select>
-          </label>
+        {/* Filter Section */}
+        <div className="glass-card p-6 mb-8">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-300">Filter by status:</span>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="glass-input px-4 py-2 rounded-lg text-gray-300 bg-transparent border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              >
+                {statuses.map(status => (
+                  <option 
+                    key={status} 
+                    value={status}
+                    className="bg-gray-900 text-gray-300"
+                  >
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="text-gray-300">
+              Showing {filteredAstronauts.length} astronauts
+            </div>
+          </div>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        {/* Grid Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredAstronauts.map((astronaut) => (
             <Link
               key={astronaut.id}
               href={`/astronauts/${astronaut.id}`}
-              className="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              className="glass-card group hover:scale-[1.02] transition-transform duration-200 flex flex-col"
             >
-              <div className="relative h-96">
+              <div className="relative h-72">
                 <Image
                   src={astronaut.image?.image_url || '/images/astronaut-placeholder.svg'}
                   alt={astronaut.name}
                   fill
-                  className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                  className="object-cover object-top rounded-t-lg"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-xl font-bold text-white">
-                      {astronaut.name}
-                    </h2>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium
-                      ${astronaut.status.name === 'Active' ? 'bg-green-500' : 
-                        astronaut.status.name === 'Retired' ? 'bg-gray-500' : 
-                        'bg-blue-500'} text-white`}>
-                      {astronaut.status.name}
-                    </span>
-                  </div>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
               </div>
-              
-              <div className="p-4">
-                <div className="space-y-2">
-                  <p className="text-gray-600">
-                    <span className="font-semibold">Nationality:</span>{' '}
-                    {typeof astronaut.nationality === 'object' 
-                      ? astronaut.nationality.name || astronaut.nationality.nationality_name 
-                      : astronaut.nationality}
-                  </p>
-                  {astronaut.agency && (
-                    <div className="flex items-center space-x-2">
-                      <span className="font-semibold text-gray-600">Agency:</span>
-                      <div className="flex items-center space-x-1">
-                        {astronaut.agency.image_url && (
-                          <div className="relative w-4 h-4">
-                            <Image
-                              src={astronaut.agency.image_url}
-                              alt={astronaut.agency.name}
-                              fill
-                              className="object-contain"
-                            />
-                          </div>
-                        )}
-                        <span className="text-gray-600">{astronaut.agency.name}</span>
-                      </div>
-                    </div>
-                  )}
-                  {astronaut.date_of_birth && (
-                    <p className="text-gray-600">
-                      <span className="font-semibold">Born:</span>{' '}
-                      {new Date(astronaut.date_of_birth).toLocaleDateString()}
-                    </p>
+              <div className="p-6 flex flex-col flex-grow">
+                <h2 className="text-xl font-semibold text-white mb-2 group-hover:text-blue-300 transition-colors">
+                  {astronaut.name}
+                </h2>
+                <div className="flex items-center space-x-2 mb-3">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    astronaut.status.name === 'active' 
+                      ? 'bg-green-500/20 text-green-300' 
+                      : astronaut.status.name === 'retired'
+                      ? 'bg-gray-500/20 text-gray-300'
+                      : 'bg-blue-500/20 text-blue-300'
+                  }`}>
+                    {astronaut.status.name.charAt(0).toUpperCase() + astronaut.status.name.slice(1)}
+                  </span>
+                  {astronaut.nationality && (
+                    <span className="text-gray-400 text-sm">
+                      {typeof astronaut.nationality === 'object' 
+                        ? astronaut.nationality.nationality_name || astronaut.nationality.name
+                        : astronaut.nationality}
+                    </span>
                   )}
                 </div>
-                
-                <div className="mt-4 flex items-center text-blue-600 group-hover:text-blue-800 transition-colors">
+                <p className="text-gray-400 text-sm line-clamp-3 flex-grow">
+                  {astronaut.bio || 'No biography available.'}
+                </p>
+                <div className="mt-4 text-blue-300 group-hover:text-blue-200 transition-colors flex items-center">
                   <span>View Profile</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg 
+                    className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </div>
@@ -152,86 +153,27 @@ export default function AstronautsPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="mt-12 flex justify-center items-center space-x-2">
-            <button
-              onClick={() => setPage(1)}
-              disabled={page === 1}
-              className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              First
-            </button>
+          <div className="flex justify-center mt-8 space-x-2">
             <button
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`glass-button px-4 py-2 ${
+                page === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-500/20 hover:text-blue-300'
+              }`}
             >
               Previous
             </button>
-
-            {/* First page */}
-            {page > 3 && (
-              <>
-                <button
-                  onClick={() => setPage(1)}
-                  className="w-10 h-10 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
-                >
-                  1
-                </button>
-                {page > 4 && (
-                  <span className="px-2 text-gray-500">...</span>
-                )}
-              </>
-            )}
-
-            {/* Current page and neighbors */}
-            {[...Array(5)].map((_, i) => {
-              const pageNum = page - 2 + i
-              if (pageNum > 0 && pageNum <= totalPages) {
-                return (
-                  <button
-                    key={pageNum}
-                    onClick={() => setPage(pageNum)}
-                    className={`w-10 h-10 rounded-lg ${
-                      page === pageNum
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    {pageNum}
-                  </button>
-                )
-              }
-              return null
-            })}
-
-            {/* Last page */}
-            {page < totalPages - 2 && (
-              <>
-                {page < totalPages - 3 && (
-                  <span className="px-2 text-gray-500">...</span>
-                )}
-                <button
-                  onClick={() => setPage(totalPages)}
-                  className="w-10 h-10 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
-                >
-                  {totalPages}
-                </button>
-              </>
-            )}
-
+            <span className="glass-card px-4 py-2 text-gray-300">
+              Page {page} of {totalPages}
+            </span>
             <button
               onClick={() => setPage(p => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`glass-button px-4 py-2 ${
+                page === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-500/20 hover:text-blue-300'
+              }`}
             >
               Next
-            </button>
-            <button
-              onClick={() => setPage(totalPages)}
-              disabled={page === totalPages}
-              className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Last
             </button>
           </div>
         )}
