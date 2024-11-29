@@ -68,7 +68,7 @@ function SpaceStationsPage() {
             Space Stations
           </h1>
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Explore humanity's permanent presence in space, from the International Space Station to commercial space habitats.
+            Explore humanity&apos;s permanent presence in space, from the International Space Station to commercial space habitats.
           </p>
         </div>
 

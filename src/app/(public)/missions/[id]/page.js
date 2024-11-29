@@ -21,7 +21,7 @@ export default function MissionDetailPage() {
           <div className="glass-card text-center p-8">
             <h1 className="text-4xl font-bold text-white mb-4 text-glow">Mission Not Found</h1>
             <p className="text-gray-300 mb-8">
-              The mission you're looking for doesn't exist or has been removed.
+              The mission you&apos;re looking for doesn&apos;t exist or has been removed.
             </p>
             <Link
               href="/missions"

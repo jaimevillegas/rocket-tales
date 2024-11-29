@@ -113,7 +113,7 @@ function HomePage() {
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2 group-hover:text-purple-500 transition-colors">Space Stations</h3>
-                <p className="text-gray-600">Visit humanity's homes in orbit.</p>
+                <p className="text-gray-600">Visit humanity&apos;s homes in orbit.</p>
               </div>
             </Link>
           </div>
